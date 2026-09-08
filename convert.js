@@ -1,8 +1,5 @@
-import { marked } from "marked";
-
 /**
- * Converte Markdown para HTML estruturado.
- * Usa a biblioteca importada (Jest/Node) ou a global window.marked (Navegador).
+ * Converte texto Markdown para HTML estruturado
  * @param {string} markdownText 
  * @returns {string}
  */
@@ -11,15 +8,21 @@ export function convertMarkdownToHtml(markdownText) {
     return "";
   }
 
-  // Prioriza o marked disponível no ambiente (global ou importado)
+  // No navegador pega do window.marked (da CDN).
+  // Nos testes Jest pega da variável injetada globalmente.
   const lib = typeof window !== "undefined" && window.marked 
     ? window.marked 
-    : marked;
+    : globalThis.marked;
 
-  const parseFn = typeof lib.parse === "function" ? lib.parse : lib;
+  if (!lib) {
+    return markdownText;
+  }
+
+  const parseFn = typeof lib.parse === "function" ? lib.parse.bind(lib) : lib;
   return parseFn(markdownText).trim();
 }
 
+// Expõe na janela global do navegador para o index.js enxergar diretamente
 if (typeof window !== "undefined") {
   window.convertMarkdownToHtml = convertMarkdownToHtml;
 }

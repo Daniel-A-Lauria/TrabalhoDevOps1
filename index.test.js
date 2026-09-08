@@ -1,11 +1,14 @@
+import { marked } from "marked";
 import { convertMarkdownToHtml } from "./convert.js";
+
+// Injeta o marked no ambiente de teste
+globalThis.marked = marked;
 
 describe("Suíte de Testes Automatizados - Editor Markdown", () => {
   describe("Testes Unitários da Função de Conversão", () => {
     test("deve converter cabeçalho (# Título) em <h1>", () => {
       const input = "# Título Principal";
       const output = convertMarkdownToHtml(input);
-      // Valida que foi gerada uma tag h1 e que contém o texto esperado
       expect(output).toMatch(/<h1.*?>Título Principal<\/h1>/);
     });
 
@@ -39,7 +42,7 @@ describe("Suíte de Testes Automatizados - Editor Markdown", () => {
       const previewEl = document.getElementById("markdown-preview");
 
       previewEl.innerHTML = convertMarkdownToHtml(inputEl.value);
-      
+
       const h1El = previewEl.querySelector("h1");
       expect(h1El).not.toBeNull();
       expect(h1El.textContent).toBe("Teste de Integração");
