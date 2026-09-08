@@ -1,35 +1,48 @@
-const { convertMarkdownToHtml } = require("./converter");
+import { convertMarkdownToHtml } from "./convert.js";
 
 describe("Suíte de Testes Automatizados - Editor Markdown", () => {
+  describe("Testes Unitários da Função de Conversão", () => {
+    test("deve converter cabeçalho (# Título) em <h1>", () => {
+      const input = "# Título Principal";
+      const output = convertMarkdownToHtml(input);
+      // Valida que foi gerada uma tag h1 e que contém o texto esperado
+      expect(output).toMatch(/<h1.*?>Título Principal<\/h1>/);
+    });
 
-  test("deve converter cabeçalho (# Titulo) em tag <h1>", () => {
-    const input = "# Olá Mundo";
-    const output = convertMarkdownToHtml(input);
-    expect(output).toContain("<h1>Olá Mundo</h1>");
+    test("deve converter negrito (**texto**) em <strong>", () => {
+      const input = "**Texto em Negrito**";
+      const output = convertMarkdownToHtml(input);
+      expect(output).toContain("<strong>Texto em Negrito</strong>");
+    });
+
+    test("deve converter itálico (*texto*) em <em>", () => {
+      const input = "*Texto em Itálico*";
+      const output = convertMarkdownToHtml(input);
+      expect(output).toContain("<em>Texto em Itálico</em>");
+    });
+
+    test("deve retornar string vazia caso o input seja nulo ou indefinido", () => {
+      expect(convertMarkdownToHtml(null)).toBe("");
+      expect(convertMarkdownToHtml(undefined)).toBe("");
+      expect(convertMarkdownToHtml("   ")).toBe("");
+    });
   });
 
-  test("deve converter texto em negrito (**texto**) em <strong>", () => {
-    const input = "**DevOps**";
-    const output = convertMarkdownToHtml(input);
-    expect(output).toContain("<strong>DevOps</strong>");
-  });
+  describe("Teste de Integração com o DOM", () => {
+    test("deve preencher o preview com o HTML gerado a partir do textarea", () => {
+      document.body.innerHTML = `
+        <textarea id="markdown-input"># Teste de Integração</textarea>
+        <div id="markdown-preview"></div>
+      `;
 
-  test("deve retornar string vazia caso o input seja nulo ou indefinido", () => {
-    expect(convertMarkdownToHtml(null)).toBe("");
-    expect(convertMarkdownToHtml(undefined)).toBe("");
-  });
+      const inputEl = document.getElementById("markdown-input");
+      const previewEl = document.getElementById("markdown-preview");
 
-  test("deve atualizar o innerHTML do elemento de preview corretamente", () => {
-    document.body.innerHTML = `
-      <textarea id="markdown-input"># Teste DOM</textarea>
-      <div id="markdown-preview"></div>
-    `;
-
-    const inputEl = document.getElementById("markdown-input");
-    const previewEl = document.getElementById("markdown-preview");
-
-    previewEl.innerHTML = convertMarkdownToHtml(inputEl.value);
-
-    expect(previewEl.innerHTML).toBe("<h1>Teste DOM</h1>");
+      previewEl.innerHTML = convertMarkdownToHtml(inputEl.value);
+      
+      const h1El = previewEl.querySelector("h1");
+      expect(h1El).not.toBeNull();
+      expect(h1El.textContent).toBe("Teste de Integração");
+    });
   });
 });

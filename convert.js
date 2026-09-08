@@ -1,10 +1,18 @@
-const { marked } = require("marked");
+import { marked } from "marked";
 
-function convertMarkdownToHtml(markdownText) {
-  if (typeof markdownText !== "string") {
+/**
+ * Converte texto Markdown para HTML estruturado.
+ * @param {string} markdownText
+ * @returns {string}
+ */
+export function convertMarkdownToHtml(markdownText) {
+  if (typeof markdownText !== "string" || !markdownText.trim()) {
     return "";
   }
-  return marked.parse(markdownText).trim();
-}
 
-module.exports = { convertMarkdownToHtml };
+  const html = typeof marked.parse === "function" 
+    ? marked.parse(markdownText) 
+    : marked(markdownText);
+
+  return html.trim();
+}

@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "jest": {
     "testEnvironment": "jsdom"
@@ -25,6 +25,6 @@
     "jest": "^30.5.1",
     "jest-environment-jsdom": "^30.5.1",
     "jsdom": "^30.0.1",
-    "marked": "^18.0.12"
+    "marked": "^4.3.0"
   }
 }

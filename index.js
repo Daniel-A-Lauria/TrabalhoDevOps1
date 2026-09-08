@@ -1,9 +1,16 @@
-const markdownInput = document.getElementById("markdown-input");
-const markdownPreview = document.getElementById("markdown-preview");
+document.addEventListener("DOMContentLoaded", () => {
+  const markdownInput = document.getElementById("markdown-input");
+  const markdownPreview = document.getElementById("markdown-preview");
 
-markdownInput.addEventListener("input", () => {
-    const markdownText = markdownInput.value;
-    markdownPreview.innerHTML = marked.parse(markdownText)
-})
+  if (!markdownInput || !markdownPreview) {
+    return;
+  }
 
-markdownPreview.innerHTML = marked.parse(markdownInput.value || "");
+  function render() {
+    markdownPreview.innerHTML = convertMarkdownToHtml(markdownInput.value);
+  }
+
+  markdownInput.addEventListener("input", render);
+
+  render();
+});
