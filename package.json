@@ -1,0 +1,26 @@
+{
+  "name": "trabalhodevops1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Daniel-A-Lauria/TrabalhoDevOps1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Daniel-A-Lauria/TrabalhoDevOps1/issues"
+  },
+  "homepage": "https://github.com/Daniel-A-Lauria/TrabalhoDevOps1#readme",
+  "devDependencies": {
+    "jest": "^30.5.1",
+    "jsdom": "^30.0.1",
+    "marked": "^18.0.12"
+  }
+}
