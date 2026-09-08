@@ -1,12 +1,17 @@
-import { convertMarkdownToHtml } from "./convert.js";
+document.addEventListener("DOMContentLoaded", () => {
+  const markdownInput = document.getElementById("markdown-input");
+  const markdownPreview = document.getElementById("markdown-preview");
 
-const markdownInput = document.getElementById("markdown-input");
-const markdownPreview = document.getElementById("markdown-preview");
+  if (!markdownInput || !markdownPreview) {
+    return;
+  }
 
-if (markdownInput && markdownPreview) {
-  markdownInput.addEventListener("input", () => {
-    markdownPreview.innerHTML = convertMarkdownToHtml(markdownInput.value);
-  });
+  function render() {
+    if (typeof convertMarkdownToHtml === "function") {
+      markdownPreview.innerHTML = convertMarkdownToHtml(markdownInput.value);
+    }
+  }
 
-  markdownPreview.innerHTML = convertMarkdownToHtml(markdownInput.value);
-}
+  markdownInput.addEventListener("input", render);
+  render();
+});
