@@ -1,0 +1,47 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editor de Texto games</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+<div class="container">
+        <header>
+            <h1>Digite!</h1>
+        </header> 
+
+        <div class="cardInset">
+            <div class="cardToInset">
+                <main>
+                    <div class="cardInsetFloating editor-section">
+                        <div class="cardToInset">
+                            <textarea id="markdown-input" placeholder="Digite aqui!"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="cardInsetFloating preview-section">
+                        <div class="cardToInset">
+                            <div id="markdown-preview"></div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <div class="cardInsetFloating">
+            <div class="cardToInset">
+                <footer>
+                    <p>
+                        Baseado no código <a href="https://www.youtube.com/watch?v=J1DAUXw_upU" target="_blank" rel="noreferrer">
+                        desse tutorial bacana</a>
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    </body>
+<script src="https://unpkg.com/marked@12.0.0/marked.min.js"></script>
+<script src="index.js"></script> 
+   </html>
