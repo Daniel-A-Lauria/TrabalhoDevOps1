@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
   },
   "repository": {
     "type": "git",
@@ -13,13 +17,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/Daniel-A-Lauria/TrabalhoDevOps1/issues"
   },
   "homepage": "https://github.com/Daniel-A-Lauria/TrabalhoDevOps1#readme",
   "devDependencies": {
     "jest": "^30.5.1",
+    "jest-environment-jsdom": "^30.5.1",
     "jsdom": "^30.0.1",
     "marked": "^18.0.12"
   }
