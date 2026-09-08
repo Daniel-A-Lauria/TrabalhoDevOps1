@@ -1,16 +1,12 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const markdownInput = document.getElementById("markdown-input");
-  const markdownPreview = document.getElementById("markdown-preview");
+import { convertMarkdownToHtml } from "./convert.js";
 
-  if (!markdownInput || !markdownPreview) {
-    return;
-  }
+const markdownInput = document.getElementById("markdown-input");
+const markdownPreview = document.getElementById("markdown-preview");
 
-  function render() {
+if (markdownInput && markdownPreview) {
+  markdownInput.addEventListener("input", () => {
     markdownPreview.innerHTML = convertMarkdownToHtml(markdownInput.value);
-  }
+  });
 
-  markdownInput.addEventListener("input", render);
-
-  render();
-});
+  markdownPreview.innerHTML = convertMarkdownToHtml(markdownInput.value);
+}
