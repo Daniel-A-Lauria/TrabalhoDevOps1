@@ -1,0 +1,74 @@
+name: Pipeline CD - Build, Versionamento e Deploy no GHCR
+
+on:
+  push:
+    branches: [ main, master ]
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  test:
+    name: Executar Testes Unitários
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar Dependências
+        run: npm ci
+
+      - name: Executar Testes
+        run: npm test
+
+  build-and-push:
+    name: Build e Publicação no GHCR
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      # Extrai tags semânticas (v1.0.0, v1.0, etc.) e a tag 'latest'
+      - name: Extrair Metadados do Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      # Autenticação nativa e segura no GHCR sem palavras-passe manuais
+      - name: Login no GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build da imagem e envio ao registo
+      - name: Construir e Publicar Imagem
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      # Simulação de Deploy em Produção
+      - name: Simulação de Deploy
+        run: |
+          echo "Ambiente: Produção"
+          echo "Imagem descarregada: ghcr.io/${{ github.repository }}:${{ steps.meta.outputs.version || 'latest' }}"
+          echo "Aplicação reiniciada e pronta para tráfego."
